@@ -1,0 +1,5 @@
+<testsuites>
+    <testsuite name="Ranger tests">
+        <directory>./tests</directory>
+    </testsuite>
+</testsuites>
