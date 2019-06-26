@@ -14,7 +14,7 @@ final class BasicTest extends TestCase
 		$client = \Grizzlyware\Ranger\Ranger::client($license, $context);
 
 		// Test
-		$this->assertTrue($client instanceof \Grizzlyware\Ranger\Client\Client);
+		$this->assertInstanceOf(\Grizzlyware\Ranger\Client\Client::class, $client);
 	}
 
 	public function testRangerServerInstanceIsReturned()
