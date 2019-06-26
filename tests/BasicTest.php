@@ -16,5 +16,14 @@ final class BasicTest extends TestCase
 		// Test
 		$this->assertTrue($client instanceof \Grizzlyware\Ranger\Client\Client);
 	}
+
+	public function testRangerServerInstanceIsReturned()
+	{
+		// Create the client
+		$server = \Grizzlyware\Ranger\Ranger::server();
+
+		// Test
+		$this->assertTrue($server instanceof \Grizzlyware\Ranger\Server\Server);
+	}
 }
 
