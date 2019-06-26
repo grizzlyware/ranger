@@ -1,0 +1,14 @@
+{
+    "name": "grizzlyware/ranger",
+    "description": "Dispense and verify license keys for your apps",
+    "type": "library",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Grizzlyware Ltd",
+            "email": "contact@grizzlyware.io"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
