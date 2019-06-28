@@ -6,6 +6,6 @@ namespace Grizzlyware\Ranger\Client;
 interface ServerConnectionInterface
 {
 	public function validateLicense(License $license, Context $context);
-	public function packPayload(License $license, Context $context);
+	public function packPayload(...$payload);
 }
 

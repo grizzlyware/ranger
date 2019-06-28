@@ -19,15 +19,17 @@ class ServerConnection extends \Grizzlyware\Ranger\Client\ServerConnection
 
 		// Build the server instance
 		$serverClientConnection = new ClientConnection();
+		$serversResponse = $serverClientConnection->handleRequest($packedPayload);
 
-		// Unpack the payload
-		$unpackedPayload = $serverClientConnection->unpackPayload($packedPayload);
-
-		// Validate the license
-		$licenseValidationResult = $serverClientConnection->validateLicense($license, $context);//$unpackedPayload->license, $unpackedPayload->context);
+		// Package the servers response up and send it back to the client...
+		$packedServerResponse = $serverClientConnection->packPayload($serversResponse);
 
 		// Server sending data... -----> --> . . . . .. ---> Received by the client...
-		return $licenseValidationResult;
+
+		// Unpack the servers response
+		$unpackedServersResponse = $this->unpackPayload($packedServerResponse);
+
+		return $unpackedServersResponse->validation_result;
 	}
 }
 

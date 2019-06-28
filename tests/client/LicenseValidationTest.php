@@ -17,7 +17,7 @@ final class LicenseValidationTest extends TestCase
 		$this->serverConnection = new \Grizzlyware\Ranger\Examples\Client\ServerConnection();
 		$this->client = \Grizzlyware\Ranger\Ranger::client($this->context, $this->serverConnection);
 
-		$this->validLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("MyValidApp-1dSsEwAHEtmmA8b0");
+		$this->validLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("License-One111One111One");
 		$this->invalidLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("MyInvalidApp-1dSsEwAHEtmmA8b0");
 	}
 

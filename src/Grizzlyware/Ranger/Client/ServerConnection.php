@@ -2,12 +2,11 @@
 
 namespace Grizzlyware\Ranger\Client;
 
+use Grizzlyware\Ranger\Shared\CanHandlePackagedPayloads;
+
 abstract class ServerConnection implements ServerConnectionInterface
 {
-	public function packPayload(License $license, Context $context)
-	{
-		return json_encode([1, 2, 3]); // TODO
-	}
+	use CanHandlePackagedPayloads;
 }
 
 

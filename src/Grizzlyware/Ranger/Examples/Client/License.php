@@ -17,6 +17,25 @@ class License extends \Grizzlyware\Ranger\Client\License
 		$license->setKey($licenseKey);
 		return $license;
 	}
+
+	public function pack()
+	{
+		return json_encode(['licenseKey' => $this->licenseKey]);
+	}
+
+	public static function unpack($body)
+	{
+		// Decode
+		$body = json_decode($body);
+
+		// Reconstruct it
+		$license = new self();
+
+		// Set the props
+		$license->setKey($body->licenseKey);
+
+		return $license;
+	}
 }
 
 
