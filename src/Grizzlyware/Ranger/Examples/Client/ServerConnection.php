@@ -25,6 +25,7 @@ final class ServerConnection extends \Grizzlyware\Ranger\Client\ServerConnection
 		$packedServerResponse = $serverClientConnection->packPayload($serversResponse);
 
 		// Server sending data... -----> --> . . . . .. ---> Received by the client...
+		// Must throw RemoteServerFailureException if we have a transport error // TODO test this
 
 		// Unpack the servers response
 		$unpackedServersResponse = $this->unpackPayload($packedServerResponse);

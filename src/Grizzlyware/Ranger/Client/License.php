@@ -4,8 +4,10 @@ namespace Grizzlyware\Ranger\Client;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Grizzlyware\Ranger\Client\Exceptions\FingerprintExpiredException;
+use Grizzlyware\Ranger\Client\Exceptions\FingerprintHardTtlExpiredException;
 use Grizzlyware\Ranger\Client\Exceptions\FingerprintInvalidException;
+use Grizzlyware\Ranger\Client\Exceptions\FingerprintSoftTtlExpiredException;
+use Grizzlyware\Ranger\Client\Exceptions\RemoteServerFailureException;
 use Grizzlyware\Ranger\Exception;
 use Grizzlyware\Ranger\Server\License\ValidationResult;
 use Grizzlyware\Ranger\Shared\CanBePackaged;
@@ -53,18 +55,32 @@ abstract class License implements LicenseInterface, CanBePackaged
 	public function validateForClient(Client $client)
 	{
 		// Do we have a fingerprint?
-		$fingerprint = $this->fetchFingerprint();
+		$fingerprintString = $this->fetchFingerprint();
+		$substituteResponseForFailedRemoteCheck = null;
 
 		// Check the fingerprint!
-		if($fingerprint)
+		if($fingerprintString)
 		{
 			try
 			{
-				return $this->validateFingerprint($fingerprint);
+				// Attempt to validate the fingerprint
+				$fingerprint = $this->validateFingerprint($fingerprintString);
+				
+				// Has it reached a hard TTL?
+				if($fingerprint->age > $this->getHardFingerprintTtl()) throw new FingerprintHardTtlExpiredException();
+				if($fingerprint->age > $this->getSoftFingerprintTtl()) throw new FingerprintHardTtlExpiredException();
+
+				// All good - return the finger prints validation result
+				return $fingerprint->result;
 			}
-			catch(FingerprintExpiredException $e)
+			catch(FingerprintHardTtlExpiredException $e)
 			{
 				// Do nothing - let it continue to a remote check
+			}
+			catch(FingerprintSoftTtlExpiredException $e)
+			{
+				// Do nothing - let it continue to a remote check, but let it be known that it's okay if we don't get a response back...
+				$substituteResponseForFailedRemoteCheck = $fingerprint->result;
 			}
 			catch(FingerprintInvalidException $e)
 			{
@@ -73,7 +89,16 @@ abstract class License implements LicenseInterface, CanBePackaged
 		}
 
 		// Check the servers response
-		$validationResult = $client->getServerConnection()->validateLicense($this, $client->getContext());
+		try
+		{
+			$validationResult = $client->getServerConnection()->validateLicense($this, $client->getContext());
+		}
+		catch(RemoteServerFailureException $e)
+		{
+			// If we have a substitute response, send it home..
+			if($substituteResponseForFailedRemoteCheck) return $substituteResponseForFailedRemoteCheck;
+			return ValidationResult::serverError($this);
+		}
 
 		// If it's a valid license check, store it
 		if($validationResult->isValid())
@@ -90,14 +115,11 @@ abstract class License implements LicenseInterface, CanBePackaged
 		{
 			$fingerprint = JWT::decode($fingerprintString, $this->getFingerprintSecret(), ['HS256']);
 
-			// TODO Check it's not expired
-			//$fingerprint->generated_at
+			// Work out the fingerprints age
+			$fingerprintAge = time() - $fingerprint->generated_at;
 
-			// Unpack the validation result..
-			return ValidationResult::unpack($fingerprint->{ValidationResult::getPackKey()});
-
-			// Has it expired?
-			throw new FingerprintExpiredException();
+			// Send it home..
+			return (object)['age' => $fingerprintAge, 'result' => ValidationResult::unpack($fingerprint->{ValidationResult::getPackKey()})];
 		}
 		catch(SignatureInvalidException $e)
 		{

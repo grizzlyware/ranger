@@ -24,6 +24,13 @@ final class ValidationResult implements CanBePackaged
 		return $result;
 	}
 
+	public static function serverError(License $license)
+	{
+		$result = new self();
+		$result->valid = false;
+		return $result;
+	}
+
 	public function isValid()
 	{
 		return $this->valid;
