@@ -12,8 +12,6 @@ class Store extends \Grizzlyware\Ranger\Server\License\Store
 		$licenses = self::getExampleLicenses();
 
 		if(isset($licenses[$licenseKey])) return $licenses[$licenseKey];
-
-		// TODO: Implement findLicenseByKey() method.
 		throw new LicenseNotFoundException();
 	}
 
