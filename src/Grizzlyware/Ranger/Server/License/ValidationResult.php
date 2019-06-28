@@ -2,16 +2,24 @@
 
 namespace Grizzlyware\Ranger\Server\License;
 
+use Grizzlyware\Ranger\Client\License;
 use Grizzlyware\Ranger\Shared\CanBePackaged;
 
 class ValidationResult implements CanBePackaged
 {
 	public $valid;
 
-	public function notFound()
+	public static function notFound()
 	{
 		$result = new self();
 		$result->valid = false;
+		return $result;
+	}
+
+	public static function valid(License $license)
+	{
+		$result = new self();
+		$result->valid = true;
 		return $result;
 	}
 

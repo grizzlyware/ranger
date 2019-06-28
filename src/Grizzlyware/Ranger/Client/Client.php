@@ -15,7 +15,18 @@ class Client
 
 	public function validateLicense(License $license)
 	{
-		return $this->serverConnection->validateLicense($license, $this->context);
+		// Attempt to validate the license locally with its fingerprint
+		return $license->validateForClient($this);
+	}
+
+	public function getContext()
+	{
+		return $this->context;
+	}
+
+	public function getServerConnection()
+	{
+		return $this->serverConnection;
 	}
 }
 

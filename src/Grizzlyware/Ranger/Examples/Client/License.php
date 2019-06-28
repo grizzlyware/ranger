@@ -9,6 +9,16 @@ class License extends \Grizzlyware\Ranger\Client\License
 {
 	protected $licenseKey;
 
+	public function fetchFingerprint()
+	{
+		return null;
+	}
+
+	public function storeFingerprint()
+	{
+		// TODO: Implement storeFingerprint() method.
+	}
+
 	public function validateForContext(Context $context)
 	{
 		$result = new ValidationResult();
