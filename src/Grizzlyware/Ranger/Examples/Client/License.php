@@ -5,18 +5,40 @@ namespace Grizzlyware\Ranger\Examples\Client;
 use Grizzlyware\Ranger\Client\Context;
 use Grizzlyware\Ranger\Server\License\ValidationResult;
 
-class License extends \Grizzlyware\Ranger\Client\License
+final class License extends \Grizzlyware\Ranger\Client\License
 {
 	protected $licenseKey;
+	static $fingerprintPath = __DIR__ . "/fingerprint";
+
+	private function getFingerprintPath()
+	{
+		return self::$fingerprintPath . '-' . md5($this->licenseKey);
+	}
+
+	protected function getFingerprintSecret()
+	{
+		return "MyFingerPrintSecret";
+	}
+
+	protected function getSoftFingerprintTtl()
+	{
+		return 30;
+	}
+
+	protected function getHardFingerprintTtl()
+	{
+		return 60;
+	}
 
 	public function fetchFingerprint()
 	{
-		return null;
+		if(!file_exists($this->getFingerprintPath())) return null;
+		return file_get_contents($this->getFingerprintPath());
 	}
 
-	public function storeFingerprint()
+	public function storeFingerprint($fingerprintString)
 	{
-		// TODO: Implement storeFingerprint() method.
+		file_put_contents($this->getFingerprintPath(), $fingerprintString);
 	}
 
 	public function validateForContext(Context $context)
@@ -40,14 +62,11 @@ class License extends \Grizzlyware\Ranger\Client\License
 
 	public function pack()
 	{
-		return json_encode(['licenseKey' => $this->licenseKey]);
+		return (object)['licenseKey' => $this->licenseKey];
 	}
 
 	public static function unpack($body)
 	{
-		// Decode
-		$body = json_decode($body);
-
 		// Reconstruct it
 		$license = new self();
 

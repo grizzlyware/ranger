@@ -1,3 +1,4 @@
 .DS_Store
 .idea
 /vendor/
+src/Grizzlyware/Ranger/Examples/Client/fingerprint-*

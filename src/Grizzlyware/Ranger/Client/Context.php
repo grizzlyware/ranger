@@ -47,14 +47,11 @@ class Context implements ContextInterface, CanBePackaged
 
 	public function pack()
 	{
-		return json_encode(get_object_vars($this));
+		return (object)get_object_vars($this);
 	}
 
 	public static function unpack($body)
 	{
-		// Decode
-		$body = json_decode($body);
-
 		// Reconstruct it
 		$parentClass = get_called_class();
 		$context = new $parentClass();

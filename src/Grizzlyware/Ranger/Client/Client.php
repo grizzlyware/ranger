@@ -2,7 +2,7 @@
 
 namespace Grizzlyware\Ranger\Client;
 
-class Client
+final class Client
 {
 	protected $context;
 	protected $serverConnection;

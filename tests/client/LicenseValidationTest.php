@@ -14,7 +14,7 @@ final class LicenseValidationTest extends TestCase
 
 	protected function setUp()
 	{
-		$this->context = \Grizzlyware\Ranger\Client\Context::create();
+		$this->context = \Grizzlyware\Ranger\Examples\Client\Context::create();
 		$this->serverConnection = new \Grizzlyware\Ranger\Examples\Client\ServerConnection();
 		$this->client = \Grizzlyware\Ranger\Ranger::client($this->context, $this->serverConnection);
 

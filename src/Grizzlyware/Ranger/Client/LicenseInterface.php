@@ -11,8 +11,8 @@ interface LicenseInterface
 	public function validateForClient(Client $client);
 
 	public function fetchFingerprint();
-	public function storeFingerprint();
-	public function validateFingerprint($fingerprint); // Return a ValidationResult
+	public function storeFingerprint($fingerprintString);
+	public function validateFingerprint($fingerprintString); // Return a ValidationResult
 }
 
 
