@@ -12,7 +12,7 @@ class License extends \Grizzlyware\Ranger\Client\License
 	public function validateForContext(Context $context)
 	{
 		$result = new ValidationResult();
-		$result->valid = true;
+		$result->valid = strpos($this->licenseKey, "Two222Two222Two") === false; // Two license is found but invalid
 		return $result;
 	}
 

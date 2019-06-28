@@ -6,6 +6,7 @@ final class LicenseValidationTest extends TestCase
 {
 	protected $validLicense;
 	protected $invalidLicense;
+	protected $nonExistentLicense;
 
 	protected $context;
 	protected $client;
@@ -18,17 +19,23 @@ final class LicenseValidationTest extends TestCase
 		$this->client = \Grizzlyware\Ranger\Ranger::client($this->context, $this->serverConnection);
 
 		$this->validLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("License-One111One111One");
-		$this->invalidLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("MyInvalidApp-1dSsEwAHEtmmA8b0");
+		$this->invalidLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("License-Two222Two222Two");
+		$this->nonExistentLicense = \Grizzlyware\Ranger\Examples\Client\License::formWithString("MyInvalidApp-1dSsEwAHEtmmA8b0");
 	}
 
-	public function testLicensePassesValidation()
+	public function testValidLicensePassesValidation()
 	{
 		$this->assertTrue($this->client->validateLicense($this->validLicense)->valid);
 	}
 
-	public function testLicenseFailsValidation()
+	public function testInvalidLicenseFailsValidation()
 	{
 		$this->assertFalse($this->client->validateLicense($this->invalidLicense)->valid);
+	}
+
+	public function testNonExistentLicenseFailsValidation()
+	{
+		$this->assertFalse($this->client->validateLicense($this->nonExistentLicense)->valid);
 	}
 }
 
