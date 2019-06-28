@@ -7,11 +7,10 @@ final class BasicTest extends TestCase
 	public function testRangerClientInstanceIsReturned()
 	{
 		// Create the mock instances
-		$license = $this->getMockBuilder(\Grizzlyware\Ranger\Client\License::class)->getMock();
-		$context = $this->getMockBuilder(\Grizzlyware\Ranger\Client\Context::class)->getMock();
+		$context = \Grizzlyware\Ranger\Examples\Client\Context::create();
 
 		// Create the client
-		$client = \Grizzlyware\Ranger\Ranger::client($license, $context);
+		$client = \Grizzlyware\Ranger\Ranger::client($context);
 
 		// Test
 		$this->assertInstanceOf(\Grizzlyware\Ranger\Client\Client::class, $client);

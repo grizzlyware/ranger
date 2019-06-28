@@ -4,13 +4,16 @@ namespace Grizzlyware\Ranger\Client;
 
 class Client
 {
-	protected $license;
 	protected $context;
 
-	public function __construct(License $license, Context $context)
+	public function __construct(Context $context)
 	{
-		$this->license = $license;
 		$this->context = $context;
+	}
+
+	public function validateLicense(License $license)
+	{
+		return true;
 	}
 }
 

@@ -2,9 +2,12 @@
 
 namespace Grizzlyware\Ranger\Client;
 
-interface License
+abstract class License implements LicenseInterface
 {
-
+	
 }
+
+
+
 
 

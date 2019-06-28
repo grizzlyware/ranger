@@ -9,7 +9,7 @@ class Generator
 	protected $options;
 	protected $store;
 
-	public function __construct(Store $store, $overrideOptions = null)
+	public function __construct(StoreInterface $store, $overrideOptions = null)
 	{
 		// Set the defaults up
 		$defaultOptions =
