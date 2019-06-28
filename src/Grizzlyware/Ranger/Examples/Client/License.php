@@ -2,9 +2,19 @@
 
 namespace Grizzlyware\Ranger\Examples\Client;
 
+use Grizzlyware\Ranger\Client\Context;
+use Grizzlyware\Ranger\Server\License\ValidationResult;
+
 class License extends \Grizzlyware\Ranger\Client\License
 {
 	protected $licenseKey;
+
+	public function validateForContext(Context $context)
+	{
+		$result = new ValidationResult();
+		$result->valid = true;
+		return $result;
+	}
 
 	public function setKey($licenseKey)
 	{

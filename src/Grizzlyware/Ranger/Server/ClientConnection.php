@@ -17,13 +17,6 @@ abstract class ClientConnection implements ClientConnectionInterface
 		$this->initialiseDataStore();
 	}
 
-	public function validateLicense(\Grizzlyware\Ranger\Client\License $license, \Grizzlyware\Ranger\Client\Context $context)
-	{
-		$result = new ValidationResult();
-		$result->valid = true;
-		return $result;
-	}
-
 	public function findLicense($licensePayload)
 	{
 		return $this->store->findLicenseByPayload($licensePayload);
@@ -46,7 +39,7 @@ abstract class ClientConnection implements ClientConnectionInterface
 		}
 
 		// Validate the license
-		$licenseValidationResult = $this->validateLicense($foundLicense, $unpackedPayload->client_context);
+		$licenseValidationResult = $foundLicense->validateForContext($unpackedPayload->client_context);
 
 		// Return the result
 		return $licenseValidationResult;
