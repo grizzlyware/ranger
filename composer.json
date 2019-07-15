@@ -22,6 +22,12 @@
         "Grizzlyware\\Ranger\\": "src/Grizzlyware/Ranger"
       }
     },
+    "autoload-dev": {
+      "psr-4":
+      {
+        "Grizzlyware\\Ranger\\Examples\\": "test_src/Grizzlyware/Ranger/Examples"
+      }
+    },
     "require-dev": {
         "phpunit/phpunit": "^7.5",
         "illuminate/support": "5.8.*"
