@@ -9,7 +9,7 @@ Ranger was built to be application and transport layer agnostic. You can run the
 ## Installation
 You can install Ranger via Composer:
 
-`composer install grizzlyware/ranger`
+`composer require grizzlyware/ranger`
 
 ## License
 GNU General Public License v3.0
