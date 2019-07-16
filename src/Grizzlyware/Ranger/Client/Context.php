@@ -33,13 +33,6 @@ class Context implements ContextInterface, CanBePackaged
 		$this->domain = $domain;
 	}
 
-	public function determineContextAttributes()
-	{
-		$this->setIpAddress('1.1.1.');
-		$this->setDirectory(__DIR__);
-		$this->setDomain('mydomain.com');
-	}
-
 	public static function getPackKey()
 	{
 		return "client_context";
