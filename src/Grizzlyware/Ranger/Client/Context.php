@@ -4,7 +4,7 @@ namespace Grizzlyware\Ranger\Client;
 
 use Grizzlyware\Ranger\Shared\CanBePackaged;
 
-abstract class Context implements ContextInterface, CanBePackaged
+class Context implements ContextInterface, CanBePackaged
 {
 	protected $ipAddress;
 	protected $directory;
@@ -70,6 +70,11 @@ abstract class Context implements ContextInterface, CanBePackaged
 		$context->setDomain($body->domain);
 
 		return $context;
+	}
+
+	public function determineContextAttributes()
+	{
+		throw new \Exception('The determineContextAttributes method has not been defined on the context');
 	}
 }
 
