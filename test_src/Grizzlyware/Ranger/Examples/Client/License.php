@@ -7,7 +7,7 @@ use Grizzlyware\Ranger\Server\License\ValidationResult;
 
 final class License extends \Grizzlyware\Ranger\Client\License
 {
-	protected $licenseKey;
+	public $licenseKey;
 	static $fingerprintPath = __DIR__ . "/fingerprint";
 
 	private function getFingerprintPath()

@@ -22,7 +22,12 @@ trait CanHandlePackagedPayloads
 
 	public function unpackPayload($payload)
 	{
-		$packKeys = self::getRegisteredPackKeys();
+		if(method_exists($this, 'getRegisteredPackClasses'))
+		{
+			$packClasses = $this->getRegisteredPackClasses();
+		}
+
+		$packKeys = self::getRegisteredPackKeys(isset($packClasses) ? $packClasses : null);
 
 		$payload = is_string($payload) ? json_decode($payload) : $payload;
 		$response = (object)[];
@@ -36,11 +41,13 @@ trait CanHandlePackagedPayloads
 		return $response;
 	}
 
-	private static function getRegisteredPackKeys()
+	private static function getRegisteredPackKeys($packClasses = null)
 	{
 		$registeredPackKeys = (object)[];
 
-		foreach(self::registeredPackClasses() as $registeredPackClass)
+		if(!$packClasses) $packClasses = self::getDefaultRegisteredPackClasses();
+
+		foreach($packClasses as $registeredPackClass)
 		{
 			$registeredPackKeys->{$registeredPackClass::getPackKey()} = $registeredPackClass;
 		}
@@ -48,7 +55,7 @@ trait CanHandlePackagedPayloads
 		return $registeredPackKeys;
 	}
 
-	private static function registeredPackClasses()
+	private static function getDefaultRegisteredPackClasses()
 	{
 		return
 		[
