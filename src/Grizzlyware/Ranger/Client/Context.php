@@ -4,7 +4,7 @@ namespace Grizzlyware\Ranger\Client;
 
 use Grizzlyware\Ranger\Shared\CanBePackaged;
 
-class Context implements ContextInterface, CanBePackaged
+abstract class Context implements ContextInterface, CanBePackaged
 {
 	protected $ipAddress;
 	protected $directory;
@@ -16,6 +16,21 @@ class Context implements ContextInterface, CanBePackaged
 		$context = new $parentClass();
 		$context->determineContextAttributes();
 		return $context;
+	}
+
+	public function getIpAddress()
+	{
+		return $this->ipAddress;
+	}
+
+	public function getDirectory()
+	{
+		return $this->directory;
+	}
+
+	public function getDomain()
+	{
+		return $this->domain;
 	}
 	
 	public function setIpAddress($ipAddress)
