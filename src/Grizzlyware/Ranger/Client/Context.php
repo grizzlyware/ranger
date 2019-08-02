@@ -35,6 +35,9 @@ class Context implements ContextInterface, CanBePackaged
 	
 	public function setIpAddress($ipAddress)
 	{
+		// Remove any ranges..
+		$ipAddress = explode("/", $ipAddress, 2)[0];
+		
 		$this->ipAddress = $ipAddress;
 	}
 
