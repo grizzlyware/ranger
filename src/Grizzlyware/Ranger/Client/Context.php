@@ -9,6 +9,7 @@ class Context implements ContextInterface, CanBePackaged
 	protected $ipAddress;
 	protected $directory;
 	protected $domain;
+	protected $applicationKey;
 
 	public static function create()
 	{
@@ -32,12 +33,17 @@ class Context implements ContextInterface, CanBePackaged
 	{
 		return $this->domain;
 	}
+
+	public function getApplicationKey()
+	{
+		return $this->applicationKey;
+	}
 	
 	public function setIpAddress($ipAddress)
 	{
 		// Remove any ranges..
 		$ipAddress = explode("/", $ipAddress, 2)[0];
-		
+
 		$this->ipAddress = $ipAddress;
 	}
 
@@ -49,6 +55,11 @@ class Context implements ContextInterface, CanBePackaged
 	public function setDomain($domain)
 	{
 		$this->domain = $domain;
+	}
+
+	public function setApplicationKey($applicationKey)
+	{
+		$this->applicationKey = $applicationKey;
 	}
 
 	public static function getPackKey()
@@ -71,6 +82,7 @@ class Context implements ContextInterface, CanBePackaged
 		$context->setIpAddress($body->ipAddress);
 		$context->setDirectory($body->directory);
 		$context->setDomain($body->domain);
+		$context->setApplicationKey($body->applicationKey);
 
 		return $context;
 	}
