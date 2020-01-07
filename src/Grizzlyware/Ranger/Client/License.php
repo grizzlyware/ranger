@@ -34,7 +34,13 @@ abstract class License implements LicenseInterface, CanBePackaged
 		$fingerprint = [];
 		$fingerprint[$validationResult::getPackKey()] = $validationResult->pack();
 		$fingerprint['generated_at'] = time();
+		$fingerprint['hash'] = $this->generateHash();
 		return JWT::encode($fingerprint, $this->getFingerprintSecret());
+	}
+
+	protected function generateHash()
+	{
+		return \md5(\serialize($this->pack()));
 	}
 
 	public static function getPackKey()
@@ -117,6 +123,10 @@ abstract class License implements LicenseInterface, CanBePackaged
 
 			// Work out the fingerprints age
 			$fingerprintAge = time() - $fingerprint->generated_at;
+
+			// Validate the hash matches
+			if(!isset($fingerprint->hash)) throw new FingerprintInvalidException('Fingerprint does not have a hash stored');
+			if($fingerprint->hash !== $this->generateHash()) throw new FingerprintInvalidException('Invalid license hash');
 
 			// Send it home..
 			return (object)['age' => $fingerprintAge, 'result' => ValidationResult::unpack($fingerprint->{ValidationResult::getPackKey()})];
