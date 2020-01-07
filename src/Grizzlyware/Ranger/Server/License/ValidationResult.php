@@ -7,8 +7,28 @@ use Grizzlyware\Ranger\Shared\CanBePackaged;
 
 final class ValidationResult implements CanBePackaged
 {
-	// TODO make protected
-	public $valid;
+	protected $valid;
+
+	public function __get($name)
+	{
+		switch($name)
+		{
+			case 'valid':
+				return $this->valid;
+		}
+
+		return null;
+	}
+
+	public function __set($name, $value)
+	{
+		switch($name)
+		{
+			case 'valid':
+				if(!isset($this->valid)) $this->valid = $value;
+				break;
+		}
+	}
 
 	public static function notFound()
 	{
