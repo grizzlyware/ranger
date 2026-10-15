@@ -35,7 +35,7 @@ abstract class License implements LicenseInterface, CanBePackaged
 		$fingerprint[$validationResult::getPackKey()] = $validationResult->pack();
 		$fingerprint['generated_at'] = time();
 		$fingerprint['hash'] = $this->generateHash();
-		return JWT::encode($fingerprint, $this->getFingerprintSecret());
+		return JWT::encode($fingerprint, $this->getFingerprintSecret(), 'HS256');
 	}
 
 	protected function generateHash()
@@ -119,7 +119,7 @@ abstract class License implements LicenseInterface, CanBePackaged
 	{
 		try
 		{
-			$fingerprint = JWT::decode($fingerprintString, $this->getFingerprintSecret(), ['HS256']);
+			$fingerprint = JWT::decode($fingerprintString, new \Firebase\JWT\Key($this->getFingerprintSecret(), 'HS256'));
 
 			// Work out the fingerprints age
 			$fingerprintAge = time() - $fingerprint->generated_at;
